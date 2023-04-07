@@ -28,7 +28,7 @@ tripController.get("/:id", async (req, res) => {
 
 //Create
 tripController.post("/", async (req, res) => {
-  const { username, date, start_date, end_date, flight } = req.params;
+  const { username, date, start_date, end_date, flight } = req.body;
 
   try {
     const data = await AppDataSource.createQueryBuilder()
