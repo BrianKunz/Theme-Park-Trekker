@@ -1,8 +1,12 @@
 import dotenv from "dotenv";
 dotenv.config();
-import chalk from "chalk";
+// import chalk from "chalk";
 import express from "express";
 import { AppDataSource } from "./dataSource";
+import userController from "./controllers/user.controller";
+import postController from "./controllers/post.controller";
+import tripController from "./controllers/trip.controller";
+import commentController from "./controllers/comment.controller";
 import morgan from "morgan";
 import cors from "cors";
 
@@ -26,12 +30,15 @@ AppDataSource.initialize()
     console.error("Error during Data Source initialization", err);
   });
 
-// app.use("/todos", todoController);
+app.use("/users", userController);
+app.use("/posts", postController);
+app.use("/trips", tripController);
+app.use("/comments", commentController);
 
 app.get("/", (req, res) => {
-  res.json({ message: "Service is alive!" });
+  res.json({ message: "Service is alive!", requestHeaders: req.headers });
 });
 
 app.listen(PORT, () => {
-  console.log(chalk.blue(`Server is starting 🚀 on PORT: ${PORT}`));
+  console.log(`Server is starting 🚀 on PORT: ${PORT}`);
 });
