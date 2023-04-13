@@ -12,6 +12,9 @@ export class Trip {
   date: Date;
 
   @Column()
+  title: string;
+
+  @Column()
   start_date: Date;
 
   @Column()
