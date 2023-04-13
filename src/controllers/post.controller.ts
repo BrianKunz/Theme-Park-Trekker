@@ -4,7 +4,7 @@ import { Post } from "../entities/Post.entity";
 const postController = express.Router();
 
 //Index
-postController.get("/", async (req, res) => {
+postController.get("/", async (_, res) => {
   try {
     const data = await AppDataSource.createQueryBuilder(Post, "post").getMany();
     res.json(data);

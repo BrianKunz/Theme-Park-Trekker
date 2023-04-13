@@ -4,7 +4,7 @@ import { Comment } from "../entities/Comment.entity";
 const commentController = express.Router();
 
 //Index
-commentController.get("/", async (req, res) => {
+commentController.get("/", async (_, res) => {
   try {
     const data = await AppDataSource.createQueryBuilder(
       Comment,

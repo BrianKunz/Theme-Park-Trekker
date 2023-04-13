@@ -4,7 +4,7 @@ import { Trip } from "../entities/Trip.entity";
 const tripController = express.Router();
 
 //Index
-tripController.get("/", async (req, res) => {
+tripController.get("/", async (_, res) => {
   try {
     const data = await AppDataSource.createQueryBuilder(Trip, "trip").getMany();
     res.json(data);

@@ -7,7 +7,7 @@ export class Post {
   id: string;
 
   @Column()
-  username: string;
+  username?: string;
 
   @Column()
   title: string;
