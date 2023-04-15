@@ -28,13 +28,13 @@ tripController.get("/:id", async (req, res) => {
 
 //Create
 tripController.post("/", async (req, res) => {
-  const { username, date, start_date, end_date, flight } = req.body;
+  const { username, title, date, start_date, end_date, flight } = req.body;
 
   try {
     const data = await AppDataSource.createQueryBuilder()
       .insert()
       .into(Trip)
-      .values({ username, date, start_date, end_date, flight })
+      .values({ username, title, date, start_date, end_date, flight })
       .execute();
     res.json(data);
   } catch (error) {
@@ -45,11 +45,11 @@ tripController.post("/", async (req, res) => {
 //Update
 tripController.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { start_date, end_date, flight } = req.body;
+  const { title, start_date, end_date, flight } = req.body;
   try {
     const updatedTrip = await AppDataSource.createQueryBuilder()
       .update(Trip)
-      .set({ start_date, end_date, flight })
+      .set({ title, start_date, end_date, flight })
       .where("id = :id", { id })
       .execute();
     res.json(updatedTrip);

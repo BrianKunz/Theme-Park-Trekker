@@ -30,11 +30,12 @@ userController.post("/", async (req, res) => {
 
 // Login user
 userController.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
+  console.log(req.body);
 
   try {
     const user = await AppDataSource.createQueryBuilder(User, "user")
-      .where("user.email = :email", { email })
+      .where("user.username = :username", { username })
       .getOne();
 
     if (!user) {

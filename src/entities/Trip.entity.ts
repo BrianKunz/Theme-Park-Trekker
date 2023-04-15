@@ -6,7 +6,7 @@ export class Trip {
   id: string;
 
   @Column()
-  username: string;
+  username?: string;
 
   @Column()
   date: Date;

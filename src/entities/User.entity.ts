@@ -6,16 +6,16 @@ export class User {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: false })
   admin: boolean;
 
   async setPassword(password: string): Promise<void> {
