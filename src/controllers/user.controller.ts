@@ -23,6 +23,7 @@ userController.post("/", async (req, res) => {
       .values(user)
       .execute();
     res.json(data);
+    console.log("Created: ", user);
   } catch (error) {
     res.status(500).json(JSON.stringify(error));
   }
@@ -54,6 +55,19 @@ userController.post("/login", async (req, res) => {
     const token = jwt.sign({ userId: user.id }, "your-secret-key");
 
     res.json({ user, token });
+  } catch (error) {
+    res.status(500).json(JSON.stringify(error));
+  }
+});
+
+// Get all users
+userController.get("/", async (_, res) => {
+  try {
+    const users = await AppDataSource.createQueryBuilder(
+      User,
+      "user"
+    ).getMany();
+    res.json(users);
   } catch (error) {
     res.status(500).json(JSON.stringify(error));
   }

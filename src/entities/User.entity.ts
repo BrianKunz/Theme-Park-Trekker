@@ -16,7 +16,7 @@ export class User {
   password: string;
 
   @Column({ default: false })
-  admin: boolean;
+  admin?: boolean;
 
   async setPassword(password: string): Promise<void> {
     const saltRounds = 6;

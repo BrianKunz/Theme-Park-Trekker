@@ -29,6 +29,7 @@ postController.get("/:id", async (req, res) => {
 //Create
 postController.post("/", async (req, res) => {
   const { username, title, image, description, time, comments } = req.body;
+  console.log(req.body);
 
   try {
     const data = await AppDataSource.createQueryBuilder()
