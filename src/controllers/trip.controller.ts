@@ -1,6 +1,7 @@
 import express from "express";
 import { AppDataSource } from "../dataSource";
 import { Trip } from "../entities/Trip.entity";
+import { CustomSessionData } from "../../global";
 const tripController = express.Router();
 
 //Index
@@ -28,13 +29,21 @@ tripController.get("/:id", async (req, res) => {
 
 //Create
 tripController.post("/", async (req, res) => {
-  const { username, title, date, start_date, end_date, flight } = req.body;
+  const { title, date, start_date, end_date, flight } = req.body;
+  const currentUser = (req.session as CustomSessionData).user;
 
   try {
     const data = await AppDataSource.createQueryBuilder()
       .insert()
       .into(Trip)
-      .values({ username, title, date, start_date, end_date, flight })
+      .values({
+        user: currentUser ? { id: currentUser } : undefined,
+        title,
+        date,
+        start_date,
+        end_date,
+        flight,
+      })
       .execute();
     res.json(data);
   } catch (error) {

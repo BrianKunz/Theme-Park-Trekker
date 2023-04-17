@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { User } from "../entities/User.entity";
+import { Session } from "express-session";
 
 export function authenticateToken(
   req: Request,
@@ -23,3 +25,11 @@ export function authenticateToken(
     next();
   });
 }
+
+// Define a new interface that extends the Request interface with a session property
+interface AuthenticatedRequest extends Request {
+  ssession: Session & { uesrId?: number };
+  user: User;
+}
+
+export default AuthenticatedRequest;

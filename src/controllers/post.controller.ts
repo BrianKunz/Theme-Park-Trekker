@@ -28,14 +28,14 @@ postController.get("/:id", async (req, res) => {
 
 //Create
 postController.post("/", async (req, res) => {
-  const { username, title, image, description, time, comments } = req.body;
+  const { user, title, image, description, created, comments } = req.body;
   console.log(req.body);
 
   try {
     const data = await AppDataSource.createQueryBuilder()
       .insert()
       .into(Post)
-      .values({ username, title, image, description, time, comments })
+      .values({ user, title, image, description, created, comments })
       .execute();
     res.json(data);
   } catch (error) {

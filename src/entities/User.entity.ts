@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Trip } from "./Trip.entity";
+import { Post } from "./Post.entity";
+import { Comment } from "./Comment.entity";
 import bcrypt from "bcrypt";
 
 @Entity()
@@ -17,6 +20,15 @@ export class User {
 
   @Column({ default: false })
   admin?: boolean;
+
+  @OneToMany(() => Trip, (trip) => trip.user)
+  trips?: Trip[];
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts?: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments?: Comment[];
 
   async setPassword(password: string): Promise<void> {
     const saltRounds = 6;

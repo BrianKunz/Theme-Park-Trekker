@@ -31,13 +31,13 @@ commentController.get("/:id", async (req, res) => {
 
 //Create
 commentController.post("/", async (req, res) => {
-  const { username, time, body } = req.body;
+  const { user, time, body } = req.body;
 
   try {
     const data = await AppDataSource.createQueryBuilder()
       .insert()
       .into(Comment)
-      .values({ username, time, body });
+      .values({ user, time, body });
     res.json(data);
   } catch (error) {
     res.status(500).json(JSON.stringify(error));
