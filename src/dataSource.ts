@@ -8,9 +8,9 @@ export const AppDataSource = new DataSource({
   type: "postgres",
   host: "localhost",
   port: 5432,
-  database: "postgres",
   username: process.env.PG_USERNAME,
   password: process.env.PG_PASSWORD,
+  database: "Trekker",
   synchronize: true,
   entities: [User, Post, Comment, Trip],
 });

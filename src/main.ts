@@ -9,6 +9,7 @@ import tripController from "./controllers/trip.controller";
 import commentController from "./controllers/comment.controller";
 import morgan from "morgan";
 import cors from "cors";
+import { authenticateToken } from "./authorization/authenticate";
 
 const PORT = process.env.PORT || 3001;
 
@@ -32,11 +33,11 @@ AppDataSource.initialize()
 
 app.use("/users", userController);
 app.use("/posts", postController);
-app.use("/trips", tripController);
+app.use("/trips", authenticateToken, tripController);
 app.use("/comments", commentController);
 
-app.get("/", (req, res) => {
-  res.json({ message: "Service is alive!", requestHeaders: req.headers });
+app.get("/", (_, res) => {
+  res.redirect("/posts");
 });
 
 app.listen(PORT, () => {
