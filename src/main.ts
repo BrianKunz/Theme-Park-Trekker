@@ -31,6 +31,11 @@ AppDataSource.initialize()
     console.error("Error during Data Source initialization", err);
   });
 
+// app.use((req, res, next) => {
+//   console.log("User:", req.session.user);
+//   next();
+// });
+
 app.use("/users", userController);
 app.use("/posts", postController);
 app.use("/trips", authenticateToken, tripController);

@@ -16,19 +16,23 @@ export function authenticateToken(
     return;
   }
 
-  jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
     if (err) {
       res.status(403).json({ message: "Forbidden" });
       return;
     }
-    req.body = user;
+
+    const user = req.session?.user;
+    localStorage.setItem("accessToken", token);
+    localStorage.setItem("user", JSON.stringify(user));
+
     next();
   });
 }
 
 // Define a new interface that extends the Request interface with a session property
-interface AuthenticatedRequest extends Request {
-  ssession: Session & { uesrId?: number };
+interface AuthenticatedRequest extends Omit<Request, "session"> {
+  session: Session & { userId?: number };
   user: User;
 }
 

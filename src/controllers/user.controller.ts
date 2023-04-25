@@ -7,7 +7,7 @@ import { authenticateToken } from "../authorization/authenticate";
 const userController = express.Router();
 
 // Create user
-userController.post("/", async (req, res) => {
+userController.post("/signup", async (req, res) => {
   const { username, email, password, admin } = req.body;
 
   try {
@@ -32,7 +32,6 @@ userController.post("/", async (req, res) => {
 // Login user
 userController.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body);
 
   try {
     const user = await AppDataSource.createQueryBuilder(User, "user")
@@ -52,7 +51,10 @@ userController.post("/login", async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user.id }, "your-secret-key");
+    const secret = process.env.JWT_SECRET || "default-secret";
+    const token = jwt.sign({ userId: user.id }, secret);
+
+    console.log("token: ", token);
 
     res.json({ user, token });
   } catch (error) {
