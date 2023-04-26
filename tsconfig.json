@@ -25,6 +25,6 @@
     "types": ["node", "jest", "express-session"],
     "lib": ["ES6", "DOM"]
   },
-  "include": ["src/**/*.ts", "src/typings.d.ts", "global.d.ts"],
+  "include": ["src/**/*.ts", "src/types.ts", "global.d.ts"],
   "exclude": ["node_modules", "**/*.test.ts"]
 }

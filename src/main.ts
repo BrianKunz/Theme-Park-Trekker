@@ -39,6 +39,7 @@ AppDataSource.initialize()
 app.use("/users", userController);
 app.use("/posts", postController);
 app.use("/trips", authenticateToken, tripController);
+// app.use("/trips", tripController);
 app.use("/comments", commentController);
 
 app.get("/", (_, res) => {

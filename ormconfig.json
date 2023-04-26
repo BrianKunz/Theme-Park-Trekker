@@ -1,0 +1,18 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "process.env.PG_USERNAME",
+  "password": "process.env.PG_PASSWORD",
+  "database": "Trekker",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/entities/*.entity.ts"],
+  "migrations": ["src/migration/*.ts"],
+  "subscribers": ["src/subscriber/*.ts"],
+  "cli": {
+    "entitiesDir": "src/entities",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}

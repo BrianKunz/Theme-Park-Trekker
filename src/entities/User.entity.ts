@@ -3,6 +3,7 @@ import { Trip } from "./Trip.entity";
 import { Post } from "./Post.entity";
 import { Comment } from "./Comment.entity";
 import bcrypt from "bcrypt";
+import { getRepository } from "typeorm";
 
 @Entity()
 export class User {
@@ -37,5 +38,11 @@ export class User {
 
   async comparePassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.password);
+  }
+
+  static async findOne(id: string): Promise<User | undefined> {
+    const userRepository = getRepository(User);
+    const user = await userRepository.findOne({ where: { id } });
+    return user ?? undefined;
   }
 }

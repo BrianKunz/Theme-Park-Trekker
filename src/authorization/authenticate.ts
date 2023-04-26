@@ -1,13 +1,13 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../entities/User.entity";
-import { Session } from "express-session";
+import { Request } from "../entities/types";
 
-export function authenticateToken(
+export async function authenticateToken(
   req: Request,
   res: Response,
   next: NextFunction
-): void {
+): Promise<void> {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -16,24 +16,28 @@ export function authenticateToken(
     return;
   }
 
-  jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
-    if (err) {
-      res.status(403).json({ message: "Forbidden" });
+  try {
+    const decodedToken = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as { userId: string };
+    console.log("decodedToken:", decodedToken);
+    const userId = decodedToken.userId;
+    const user = await User.findOne(userId);
+    console.log("user:", user);
+
+    if (!user) {
+      res.status(401).json({ message: "User not found" });
       return;
     }
 
-    const user = req.session?.user;
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("user", JSON.stringify(user));
-
+    req.user = user;
+    const isAuthenticated = true;
+    console.log("isAuthenticated:", isAuthenticated);
     next();
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ message: "Invalid token" });
+    return;
+  }
 }
-
-// Define a new interface that extends the Request interface with a session property
-interface AuthenticatedRequest extends Omit<Request, "session"> {
-  session: Session & { userId?: number };
-  user: User;
-}
-
-export default AuthenticatedRequest;

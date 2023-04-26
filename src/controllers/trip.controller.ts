@@ -7,10 +7,9 @@ import { CustomSessionData } from "../../global";
 const tripController = express.Router();
 
 //Index
-tripController.get("/", async (req, res) => {
+tripController.get("/", async (_, res) => {
   try {
     const data = await AppDataSource.createQueryBuilder(Trip, "trip").getMany();
-    console.log((req.session as CustomSessionData).user);
     res.json(data);
   } catch (error) {
     res.status(500).json(JSON.stringify(error));
