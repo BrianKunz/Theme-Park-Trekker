@@ -19,7 +19,8 @@
     "build:watch": "tsc -w -p tsconfig.json",
     "build-all": "yarn clean && yarn build && yarn esbuild-node && yarn esbuild-browser",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "heroku-prebuild": "npm install -g yarn"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
