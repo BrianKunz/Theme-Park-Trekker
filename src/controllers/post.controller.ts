@@ -1,5 +1,5 @@
 import express from "express";
-import { AppDataSource } from "../dataSource";
+import AppDataSource from "../dataSource";
 import { Post } from "../entities/Post.entity";
 const postController = express.Router();
 
@@ -32,7 +32,7 @@ postController.post("/", async (req, res) => {
   console.log(req.body);
 
   try {
-    const data = await AppDataSource.createQueryBuilder()
+    const data = await AppDataSource.createQueryBuilder(Post, "post")
       .insert()
       .into(Post)
       .values({ user, title, image, description, created, comments })
@@ -48,7 +48,7 @@ postController.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { title, image, description } = req.body;
   try {
-    const updatedPost = await AppDataSource.createQueryBuilder()
+    const updatedPost = await AppDataSource.createQueryBuilder(Post, "post")
       .update(Post)
       .set({ title, image, description })
       .where("id = :id", { id })
@@ -63,7 +63,7 @@ postController.put("/:id", async (req, res) => {
 postController.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedPost = await AppDataSource.createQueryBuilder()
+    const deletedPost = await AppDataSource.createQueryBuilder(Post, "post")
       .delete()
       .from(Post)
       .where("id = :id", { id })

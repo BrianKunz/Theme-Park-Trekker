@@ -1,5 +1,5 @@
 import express from "express";
-import { AppDataSource } from "../dataSource";
+import AppDataSource from "../dataSource";
 import { Comment } from "../entities/Comment.entity";
 const commentController = express.Router();
 
@@ -34,7 +34,7 @@ commentController.post("/", async (req, res) => {
   const { user, time, body } = req.body;
 
   try {
-    const data = await AppDataSource.createQueryBuilder()
+    const data = await AppDataSource.createQueryBuilder(Comment, "comment")
       .insert()
       .into(Comment)
       .values({ user, time, body });
@@ -49,7 +49,10 @@ commentController.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { body } = req.body;
   try {
-    const updatedComment = await AppDataSource.createQueryBuilder()
+    const updatedComment = await AppDataSource.createQueryBuilder(
+      Comment,
+      "comment"
+    )
       .update(Comment)
       .set({ body })
       .where("id = :id", { id })
@@ -64,7 +67,10 @@ commentController.put("/:id", async (req, res) => {
 commentController.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedComment = await AppDataSource.createQueryBuilder()
+    const deletedComment = await AppDataSource.createQueryBuilder(
+      Comment,
+      "comment"
+    )
       .delete()
       .from(Comment)
       .where("id = :id", { id })

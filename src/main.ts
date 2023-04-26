@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
-// import chalk from "chalk";
 import express from "express";
-import { AppDataSource } from "./dataSource";
+import AppDataSource from "./dataSource";
 import userController from "./controllers/user.controller";
 import postController from "./controllers/post.controller";
 import tripController from "./controllers/trip.controller";
@@ -30,11 +29,6 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Error during Data Source initialization", err);
   });
-
-// app.use((req, res, next) => {
-//   console.log("User:", req.session.user);
-//   next();
-// });
 
 app.use("/users", userController);
 app.use("/posts", postController);

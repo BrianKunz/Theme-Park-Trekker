@@ -1,5 +1,5 @@
 import express from "express";
-import { AppDataSource } from "../dataSource";
+import AppDataSource from "../dataSource";
 import { User } from "../entities/User.entity";
 import jwt from "jsonwebtoken";
 import { authenticateToken } from "../authorization/authenticate";
@@ -17,7 +17,8 @@ userController.post("/signup", async (req, res) => {
     await user.setPassword(password);
     user.admin = admin;
 
-    const data = await AppDataSource.createQueryBuilder()
+    await AppDataSource.initialize();
+    const data = await AppDataSource.createQueryBuilder(User, "user")
       .insert()
       .into(User)
       .values(user)
@@ -34,6 +35,7 @@ userController.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
+    await AppDataSource.initialize();
     const user = await AppDataSource.createQueryBuilder(User, "user")
       .where("user.username = :username", { username })
       .getOne();
@@ -65,6 +67,7 @@ userController.post("/login", async (req, res) => {
 // Get all users
 userController.get("/", async (_, res) => {
   try {
+    await AppDataSource.initialize();
     const users = await AppDataSource.createQueryBuilder(
       User,
       "user"
@@ -80,6 +83,7 @@ userController.get("/protected", authenticateToken, async (req, res) => {
   const { id } = req.body;
 
   try {
+    await AppDataSource.initialize();
     const user = await AppDataSource.createQueryBuilder(User, "user")
       .where("user.id = :userId", { id })
       .getOne();

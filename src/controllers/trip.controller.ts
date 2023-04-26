@@ -1,5 +1,5 @@
 import express, { Request } from "express";
-import { AppDataSource } from "../dataSource";
+import AppDataSource from "../dataSource";
 import { Trip } from "../entities/Trip.entity";
 import { User } from "../entities/User.entity";
 import { CustomSessionData } from "../../global";
@@ -34,7 +34,7 @@ tripController.post("/", async (req: Request, res) => {
   const { title, date, start_date, end_date, flight } = req.body;
   const currentUser = (req.session as CustomSessionData).user;
   console.log(currentUser); // Log the current user to the console
-  const userRepository = AppDataSource.getRepository(User);
+  const userRepository = AppDataSource.connection.getRepository(User);
   const user = await userRepository.findOne(currentUser);
 
   if (!user) {
@@ -50,7 +50,7 @@ tripController.post("/", async (req: Request, res) => {
   trip.user = user;
 
   try {
-    const data = await AppDataSource.createQueryBuilder()
+    const data = await AppDataSource.createQueryBuilder(Trip, "trip")
       .insert()
       .into(Trip)
       .values({
@@ -73,7 +73,7 @@ tripController.put("/:id", async (req, res) => {
   const { id } = req.params;
   const { title, start_date, end_date, flight } = req.body;
   try {
-    const updatedTrip = await AppDataSource.createQueryBuilder()
+    const updatedTrip = await AppDataSource.createQueryBuilder(Trip, "trip")
       .update(Trip)
       .set({ title, start_date, end_date, flight })
       .where("id = :id", { id })
@@ -88,7 +88,7 @@ tripController.put("/:id", async (req, res) => {
 tripController.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const deletedTrip = await AppDataSource.createQueryBuilder()
+    const deletedTrip = await AppDataSource.createQueryBuilder(Trip, "trip")
       .delete()
       .from(Trip)
       .where("id = :id", { id })
